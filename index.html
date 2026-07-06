@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام إدارة المهام المتقدم</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+
+  
+    <!--LOADING SCREEN -->
+
+    <div id="loadingScreen">
+        <div class="loader-container">
+            <div class="loader-logo">
+                <i class="fas fa-tasks"></i>
+            </div>
+            <div class="loader-spinner"></div>
+            <div class="loader-progress">
+                <div class="loader-progress-bar"></div>
+            </div>
+            <div class="loader-text">جاري تحميل النظام...</div>
+        </div>
+    </div>
+
+   
+    <!-- MAIN APP CONTAINER -->
+   
+    <div id="app" style="display: none;">
+
+        <!-- ========== SIDEBAR ========== -->
+        <aside id="sidebar" class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <i class="fas fa-tasks"></i>
+                    <span>TaskFlow</span>
+                </div>
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            </div>
+
+            <nav class="sidebar-nav">
+                <ul>
+                    <li class="nav-item active" data-view="dashboard">
+                        <a href="#">
+                            <i class="fas fa-th-large"></i>
+                            <span>لوحة التحكم</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" data-view="tasks">
+                        <a href="#">
+                            <i class="fas fa-list-check"></i>
+                            <span>جميع المهام</span>
+                            <span class="badge task-count">0</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" data-view="today">
+                        <a href="#">
+                            <i class="fas fa-calendar-day"></i>
+                            <span>مهام اليوم</span>
+                            <span class="badge today-count">0</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" data-view="upcoming">
+                        <a href="#">
+                            <i class="fas fa-calendar-week"></i>
+                            <span>المهام القادمة</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" data-view="completed">
+                        <a href="#">
+                            <i class="fas fa-check-circle"></i>
+                            <span>المهام المكتملة</span>
+                            <span class="badge completed-count">0</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" data-view="pending">
+                        <a href="#">
+                            <i class="fas fa-clock"></i>
+                            <span>المهام المعلقة</span>
+                            <span class="badge pending-count">0</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" data-view="favorites">
+                        <a href="#">
+                            <i class="fas fa-star"></i>
+                            <span>المفضلة</span>
+                            <span class="badge favorite-count">0</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" data-view="archived">
+                        <a href="#">
+                            <i class="fas fa-archive"></i>
+                            <span>المؤرشفة</span>
+                            <span class="badge archived-count">0</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" data-view="trash">
+                        <a href="#">
+                            <i class="fas fa-trash"></i>
+                            <span>سلة المحذوفات</span>
+                            <span class="badge trash-count">0</span>
+                        </a>
+                    </li>
+                    <li class="nav-divider"></li>
+                    <li class="nav-item" data-view="categories">
+                        <a href="#">
+                            <i class="fas fa-tags"></i>
+                            <span>التصنيفات</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" data-view="calendar">
+                        <a href="#">
+                            <i class="fas fa-calendar-alt"></i>
+                            <span>التقويم</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" data-view="statistics">
+                        <a href="#">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>الإحصائيات</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" data-view="reports">
+                        <a href="#">
+                            <i class="fas fa-file-alt"></i>
+                            <span>التقارير</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" data-view="activity">
+                        <a href="#">
+                            <i class="fas fa-history"></i>
+                            <span>سجل النشاط</span>
+                        </a>
+                    </li>
+                    <li class="nav-divider"></li>
+                    <li class="nav-item" data-view="settings">
+                        <a href="#">
+                            <i class="fas fa-cog"></i>
+                            <span>الإعدادات</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" data-view="help">
+                        <a href="#">
+                            <i class="fas fa-question-circle"></i>
+                            <span>مساعدة</span>
+                        </a>
+                    </li>
+                    <li class="nav-item" data-view="about">
+                        <a href="#">
+                            <i class="fas fa-info-circle"></i>
+                            <span>عن النظام</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="avatar">
+                        <img src="https://ui-avatars.com/api/?name=Admin&background=6C63FF&color=fff&size=40" alt="User">
+                    </div>
+                    <div class="user-details">
+                        <span class="user-name">أحمد محمد</span>
+                        <span class="user-role">مدير النظام</span>
+                    </div>
+                </div>
+                <button class="logout-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </aside>
+
+        <!-- MAIN CONTENT -->
+        <main id="mainContent">
+
+            <!-- TOP NAVBAR  -->
+            <header class="top-navbar">
+                <div class="navbar-left">
+                    <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h1 class="page-title" id="pageTitle">لوحة التحكم</h1>
+                </div>
+
+                <div class="navbar-center">
+                    <div class="global-search">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="globalSearchInput" placeholder="بحث سريع... (Ctrl+F)" autocomplete="off">
+                        <span class="search-shortcut">Ctrl+F</span>
+                        <div class="search-results-dropdown" id="searchResults"></div>
+                    </div>
+                </div>
+
+                <div class="navbar-right">
+                    <button class="theme-toggle" id="themeToggle" title="تبديل الثيم">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                    <button class="notifications-btn" id="notificationsBtn" title="الإشعارات">
+                        <i class="fas fa-bell"></i>
+                        <span class="badge notification-count" id="notificationCount">0</span>
+                    </button>
+                    <button class="quick-actions-btn" id="quickActionsBtn" title="إجراءات سريعة">
+                        <i class="fas fa-plus-circle"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!--  VIEWS CONTAINER = -->
+            <div class="views-container" id="viewsContainer">
+
+                <!-- DASHBOARD VIEW -->
+                <section class="view" id="view-dashboard" style="display: block;">
+                    <div class="view-header">
+                        <h2>لوحة التحكم</h2>
+                        <p>نظرة عامة على جميع مهامك وإحصائيات النظام</p>
+                    </div>
+
+                    <div class="dashboard-stats" id="dashboardStats">
+                        <div class="stat-card">
+                            <div class="stat-icon total"><i class="fas fa-tasks"></i></div>
+                            <div class="stat-info">
+                                <span class="stat-label">إجمالي المهام</span>
+                                <span class="stat-value" id="statTotal">0</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon completed"><i class="fas fa-check-circle"></i></div>
+                            <div class="stat-info">
+                                <span class="stat-label">مكتملة</span>
+                                <span class="stat-value" id="statCompleted">0</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon pending"><i class="fas fa-clock"></i></div>
+                            <div class="stat-info">
+                                <span class="stat-label">معلقة</span>
+                                <span class="stat-value" id="statPending">0</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon inprogress"><i class="fas fa-spinner"></i></div>
+                            <div class="stat-info">
+                                <span class="stat-label">قيد التنفيذ</span>
+                                <span class="stat-value" id="statInProgress">0</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon archived"><i class="fas fa-archive"></i></div>
+                            <div class="stat-info">
+                                <span class="stat-label">مؤرشفة</span>
+                                <span class="stat-value" id="statArchived">0</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon favorites"><i class="fas fa-star"></i></div>
+                            <div class="stat-info">
+                                <span class="stat-label">مفضلة</span>
+                                <span class="stat-value" id="statFavorites">0</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon overdue"><i class="fas fa-exclamation-triangle"></i></div>
+                            <div class="stat-info">
+                                <span class="stat-label">متأخرة</span>
+                                <span class="stat-value" id="statOverdue">0</span>
+                            </div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-icon today"><i class="fas fa-calendar-day"></i></div>
+                            <div class="stat-info">
+                                <span class="stat-label">مهام اليوم</span>
+                                <span class="stat-value" id="statToday">0</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-charts">
+                        <div class="chart-card">
+                            <h3>نسبة الإنجاز</h3>
+                            <div class="progress-ring-container">
+                                <svg class="progress-ring" width="120" height="120">
+                                    <circle class="progress-ring-bg" cx="60" cy="60" r="50" />
+                                    <circle class="progress-ring-fg" cx="60" cy="60" r="50" id="progressRing" />
+                                </svg>
+                                <div class="progress-ring-text">
+                                    <span id="progressPercentage">0%</span>
+                                </div>
+                            </div>
+                            <div class="progress-details">
+                                <span>المهام المكتملة: <strong id="completedTasksCount">0</strong></span>
+                                <span>إجمالي المهام: <strong id="totalTasksCount">0</strong></span>
+                            </div>
+                        </div>
+
+                        <div class="chart-card">
+                            <h3>توزيع المهام حسب الأولوية</h3>
+                            <div class="priority-chart" id="priorityChart">
+                                <div class="priority-bar urgent">
+                                    <span>عاجل</span>
+                                    <div class="bar-track">
+                                        <div class="bar-fill" style="width: 0%;" id="urgentBar"></div>
+                                    </div>
+                                    <span class="bar-count" id="urgentCount">0</span>
+                                </div>
+                                <div class="priority-bar high">
+                                    <span>مرتفعة</span>
+                                    <div class="bar-track">
+                                        <div class="bar-fill" style="width: 0%;" id="highBar"></div>
+                                    </div>
+                                    <span class="bar-count" id="highCount">0</span>
+                                </div>
+                                <div class="priority-bar medium">
+                                    <span>متوسطة</span>
+                                    <div class="bar-track">
+                                        <div class="bar-fill" style="width: 0%;" id="mediumBar"></div>
+                                    </div>
+                                    <span class="bar-count" id="mediumCount">0</span>
+                                </div>
+                                <div class="priority-bar low">
+                                    <span>منخفضة</span>
+                                    <div class="bar-track">
+                                        <div class="bar-fill" style="width: 0%;" id="lowBar"></div>
+                                    </div>
+                                    <span class="bar-count" id="lowCount">0</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="dashboard-activity">
+                        <div class="activity-card">
+                            <h3>آخر النشاطات</h3>
+                            <div class="activity-list" id="recentActivities">
+                                <div class="empty-state">
+                                    <i class="fas fa-inbox"></i>
+                                    <p>لا توجد نشاطات حديثة</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- ===== TASKS VIEW ===== -->
+                <section class="view" id="view-tasks">
+                    <div class="view-header">
+                        <div class="view-header-left">
+                            <h2>جميع المهام</h2>
+                            <p>إدارة جميع المهام والبحث والتصفية والفرز</p>
+                        </div>
+                        <div class="view-header-right">
+                            <button class="btn btn-primary" id="createTaskBtn">
+                                <i class="fas fa-plus"></i> مهمة جديدة
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="tasks-toolbar">
+                        <div class="toolbar-left">
+                            <div class="filter-group">
+                                <button class="filter-btn active" data-filter="all">الكل</button>
+                                <button class="filter-btn" data-filter="pending">معلقة</button>
+                                <button class="filter-btn" data-filter="in-progress">قيد التنفيذ</button>
+                                <button class="filter-btn" data-filter="completed">مكتملة</button>
+                                <button class="filter-btn" data-filter="cancelled">ملغية</button>
+                                <button class="filter-btn" data-filter="on-hold">معلقة مؤقتًا</button>
+                            </div>
+                        </div>
+                        <div class="toolbar-right">
+                            <div class="sort-group">
+                                <label>
+                                    <i class="fas fa-sort"></i>
+                                    <select id="sortSelect">
+                                        <option value="createdAt-desc">الأحدث</option>
+                                        <option value="createdAt-asc">الأقدم</option>
+                                        <option value="dueDate-asc">الموعد الأقرب</option>
+                                        <option value="dueDate-desc">الموعد الأبعد</option>
+                                        <option value="title-asc">العنوان (أ-ي)</option>
+                                        <option value="title-desc">العنوان (ي-أ)</option>
+                                        <option value="priority-asc">الأولوية (منخفضة-عالية)</option>
+                                        <option value="priority-desc">الأولوية (عالية-منخفضة)</option>
+                                        <option value="progress-asc">التقدم (الأقل)</option>
+                                        <option value="progress-desc">التقدم (الأعلى)</option>
+                                    </select>
+                                </label>
+                            </div>
+                            <button class="btn btn-outline" id="resetFiltersBtn">
+                                <i class="fas fa-undo"></i> إعادة تعيين
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="tasks-container" id="tasksContainer">
+                        <!-- Tasks will be rendered here -->
+                    </div>
+                </section>
+
+                <!-- TODAY VIEW -->
+                <section class="view" id="view-today">
+                    <div class="view-header">
+                        <h2>مهام اليوم</h2>
+                        <p>جميع المهام المقررة لهذا اليوم</p>
+                    </div>
+                    <div class="tasks-container" id="todayTasksContainer"></div>
+                </section>
+
+                <!-- UPCOMING VIEW  -->
+                <section class="view" id="view-upcoming">
+                    <div class="view-header">
+                        <h2>المهام القادمة</h2>
+                        <p>المهام المقررة للأيام القادمة</p>
+                    </div>
+                    <div class="tasks-container" id="upcomingTasksContainer"></div>
+                </section>
+
+                <!--  COMPLETED VIEW -->
+                <section class="view" id="view-completed">
+                    <div class="view-header">
+                        <h2>المهام المكتملة</h2>
+                        <p>جميع المهام التي تم إنجازها</p>
+                    </div>
+                    <div class="tasks-container" id="completedTasksContainer"></div>
+                </section>
+
+                <!--  PENDING VIEW  -->
+                <section class="view" id="view-pending">
+                    <div class="view-header">
+                        <h2>المهام المعلقة</h2>
+                        <p>المهام التي لم تبدأ بعد أو في انتظار العمل</p>
+                    </div>
+                    <div class="tasks-container" id="pendingTasksContainer"></div>
+                </section>
+
+                <!--  FAVORITES VIEW  -->
+                <section class="view" id="view-favorites">
+                    <div class="view-header">
+                        <h2>المهام المفضلة</h2>
+                        <p>جميع المهام التي تم وضع علامة عليها كمفضلة</p>
+                    </div>
+                    <div class="tasks-container" id="favoritesTasksContainer"></div>
+                </section>
+
+                <!--  ARCHIVED VIEW  -->
+                <section class="view" id="view-archived">
+                    <div class="view-header">
+                        <h2>المهام المؤرشفة</h2>
+                        <p>المهام التي تم أرشفتها</p>
+                    </div>
+                    <div class="tasks-container" id="archivedTasksContainer"></div>
+                </section>
+
+                <!--  TRASH VIEW  -->
+                <section class="view" id="view-trash">
+                    <div class="view-header">
+                        <h2>سلة المحذوفات</h2>
+                        <p>المهام المحذوفة والتي يمكن استعادتها</p>
+                    </div>
+                    <div class="tasks-container" id="trashTasksContainer"></div>
+                </section>
+
+                <!--  CATEGORIES VIEW  -->
+                <section class="view" id="view-categories">
+                    <div class="view-header">
+                        <div class="view-header-left">
+                            <h2>التصنيفات</h2>
+                            <p>إدارة تصنيفات المهام</p>
+                        </div>
+                        <div class="view-header-right">
+                            <button class="btn btn-primary" id="addCategoryBtn">
+                                <i class="fas fa-plus"></i> تصنيف جديد
+                            </button>
+                        </div>
+                    </div>
+                    <div class="categories-container" id="categoriesContainer"></div>
+                </section>
+
+                <!-- CALENDAR VIEW  -->
+                <section class="view" id="view-calendar">
+                    <div class="view-header">
+                        <h2>التقويم</h2>
+                        <p>عرض المهام حسب الأيام</p>
+                    </div>
+                    <div class="calendar-container">
+                        <div class="calendar-header">
+                            <button class="btn btn-icon" id="prevMonth"><i class="fas fa-chevron-right"></i></button>
+                            <h3 id="calendarMonthYear"></h3>
+                            <button class="btn btn-icon" id="nextMonth"><i class="fas fa-chevron-left"></i></button>
+                        </div>
+                        <div class="calendar-grid" id="calendarGrid"></div>
+                        <div class="calendar-tasks" id="calendarTasks">
+                            <h4>مهام اليوم المحدد</h4>
+                            <div id="calendarDayTasks"></div>
+                        </div>
+                    </div>
+                </section>
+
+                <!--  STATISTICS VIEW -->
+                <section class="view" id="view-statistics">
+                    <div class="view-header">
+                        <h2>الإحصائيات</h2>
+                        <p>تحليل شامل لأداء المهام</p>
+                    </div>
+                    <div class="statistics-container">
+                        <div class="statistics-grid">
+                            <div class="stat-card-large">
+                                <h3>توزيع الحالات</h3>
+                                <div class="status-distribution" id="statusDistribution"></div>
+                            </div>
+                            <div class="stat-card-large">
+                                <h3>التقدم الشهري</h3>
+                                <div class="monthly-progress" id="monthlyProgress">
+                                    <canvas id="monthlyChart" width="400" height="200"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!--  REPORTS VIEW -->
+                <section class="view" id="view-reports">
+                    <div class="view-header">
+                        <h2>التقارير</h2>
+                        <p>إنشاء وتصدير التقارير</p>
+                    </div>
+                    <div class="reports-container">
+                        <div class="report-actions">
+                            <button class="btn btn-primary" id="exportJsonBtn"><i class="fas fa-file-code"></i> تصدير JSON</button>
+                            <button class="btn btn-primary" id="exportCsvBtn"><i class="fas fa-file-csv"></i> تصدير CSV</button>
+                            <button class="btn btn-primary" id="exportTxtBtn"><i class="fas fa-file-alt"></i> تصدير TXT</button>
+                            <button class="btn btn-secondary" id="importBtn"><i class="fas fa-file-import"></i> استيراد</button>
+                        </div>
+                        <div class="report-preview" id="reportPreview">
+                            <div class="empty-state">
+                                <i class="fas fa-file-alt"></i>
+                                <p>اختر نوع التقرير للتصدير</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!--  ACTIVITY VIEW  -->
+                <section class="view" id="view-activity">
+                    <div class="view-header">
+                        <h2>سجل النشاط</h2>
+                        <p>جميع العمليات التي تمت في النظام</p>
+                    </div>
+                    <div class="activity-log-container" id="activityLogContainer"></div>
+                </section>
+
+                <!--  SETTINGS VIEW  -->
+                <section class="view" id="view-settings">
+                    <div class="view-header">
+                        <h2>الإعدادات</h2>
+                        <p>تخصيص النظام حسب احتياجاتك</p>
+                    </div>
+                    <div class="settings-container">
+                        <div class="settings-section">
+                            <h3>المظهر</h3>
+                            <div class="setting-item">
+                                <label>الثيم</label>
+                                <div class="theme-selector">
+                                    <button class="theme-option active" data-theme="light"><i class="fas fa-sun"></i> فاتح</button>
+                                    <button class="theme-option" data-theme="dark"><i class="fas fa-moon"></i> داكن</button>
+                                </div>
+                            </div>
+                            <div class="setting-item">
+                                <label>الرسوم المتحركة</label>
+                                <div class="toggle-switch">
+                                    <input type="checkbox" id="animationsToggle" checked>
+                                    <label for="animationsToggle"></label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="settings-section">
+                            <h3>العرض</h3>
+                            <div class="setting-item">
+                                <label>حجم البطاقات</label>
+                                <select id="cardSizeSelect">
+                                    <option value="small">صغير</option>
+                                    <option value="medium" selected>متوسط</option>
+                                    <option value="large">كبير</option>
+                                </select>
+                            </div>
+                            <div class="setting-item">
+                                <label>الفرز الافتراضي</label>
+                                <select id="defaultSortSelect">
+                                    <option value="createdAt-desc">الأحدث</option>
+                                    <option value="createdAt-asc">الأقدم</option>
+                                    <option value="dueDate-asc">الموعد الأقرب</option>
+                                    <option value="priority-desc">الأولوية (الأعلى أولاً)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="settings-section">
+                            <h3>الإشعارات</h3>
+                            <div class="setting-item">
+                                <label>إشعارات التذكير</label>
+                                <div class="toggle-switch">
+                                    <input type="checkbox" id="reminderNotifications" checked>
+                                    <label for="reminderNotifications"></label>
+                                </div>
+                            </div>
+                            <div class="setting-item">
+                                <label>إشعارات البريد الإلكتروني</label>
+                                <div class="toggle-switch">
+                                    <input type="checkbox" id="emailNotifications">
+                                    <label for="emailNotifications"></label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="settings-section">
+                            <h3>النسخ الاحتياطي</h3>
+                            <div class="setting-item">
+                                <button class="btn btn-primary" id="createBackupBtn"><i class="fas fa-download"></i> إنشاء نسخة احتياطية</button>
+                                <button class="btn btn-secondary" id="restoreBackupBtn"><i class="fas fa-upload"></i> استعادة نسخة</button>
+                            </div>
+                            <div class="setting-item">
+                                <span>آخر نسخة احتياطية: <span id="lastBackupDate">غير موجود</span></span>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!--  HELP VIEW  -->
+                <section class="view" id="view-help">
+                    <div class="view-header">
+                        <h2>مركز المساعدة</h2>
+                        <p>دليل استخدام النظام</p>
+                    </div>
+                    <div class="help-container">
+                        <div class="help-section">
+                            <h3><i class="fas fa-keyboard"></i> اختصارات لوحة المفاتيح</h3>
+                            <ul class="shortcuts-list">
+                                <li><kbd>Ctrl + N</kbd> <span>إنشاء مهمة جديدة</span></li>
+                                <li><kbd>Ctrl + F</kbd> <span>فتح البحث</span></li>
+                                <li><kbd>Ctrl + S</kbd> <span>حفظ التغييرات</span></li>
+                                <li><kbd>Delete</kbd> <span>حذف المهمة المحددة</span></li>
+                                <li><kbd>Escape</kbd> <span>إغلاق النافذة المنبثقة</span></li>
+                                <li><kbd>Ctrl + Z</kbd> <span>تراجع</span></li>
+                                <li><kbd>Ctrl + Y</kbd> <span>إعادة</span></li>
+                            </ul>
+                        </div>
+                        <div class="help-section">
+                            <h3><i class="fas fa-question"></i> الأسئلة الشائعة</h3>
+                            <div class="faq-item">
+                                <div class="faq-question">كيف يمكنني إنشاء مهمة جديدة؟</div>
+                                <div class="faq-answer">اضغط على زر "مهمة جديدة" في صفحة جميع المهام، أو استخدم اختصار Ctrl + N.</div>
+                            </div>
+                            <div class="faq-item">
+                                <div class="faq-question">كيف يمكنني استعادة مهمة محذوفة؟</div>
+                                <div class="faq-answer">اذهب إلى "سلة المحذوفات" وابحث عن المهمة، ثم اضغط على زر "استعادة".</div>
+                            </div>
+                            <div class="faq-item">
+                                <div class="faq-question">كيف أقوم بتغيير الثيم؟</div>
+                                <div class="faq-answer">استخدم زر الثيم في أعلى الشاشة، أو من خلال الإعدادات.</div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!--  ABOUT VIEW -->
+                <section class="view" id="view-about">
+                    <div class="view-header">
+                        <h2>عن النظام</h2>
+                        <p>معلومات حول نظام إدارة المهام</p>
+                    </div>
+                    <div class="about-container">
+                        <div class="about-card">
+                            <div class="about-logo">
+                                <i class="fas fa-tasks"></i>
+                            </div>
+                            <h1>TaskFlow</h1>
+                            <p>نظام إدارة مهام متطور يهدف إلى تحسين الإنتاجية وتنظيم العمل.</p>
+                            <div class="about-info">
+                                <div class="about-item">
+                                    <span>الإصدار</span>
+                                    <strong>v2.0.0</strong>
+                                </div>
+                                <div class="about-item">
+                                    <span>المطور</span>
+                                    <strong>فريق TaskFlow</strong>
+                                </div>
+                                <div class="about-item">
+                                    <span>التقنيات</span>
+                                    <strong>HTML5, CSS3, JavaScript (ES6+)</strong>
+                                </div>
+                                <div class="about-item">
+                                    <span>تم الإنشاء</span>
+                                    <strong>2024</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </main>
+    </div>
+
+    
+    <!-- MODALS -->
+    
+
+    <!-- ===== TASK MODAL ===== -->
+    <div class="modal-overlay" id="taskModalOverlay">
+        <div class="modal modal-large" id="taskModal">
+            <div class="modal-header">
+                <h2 id="taskModalTitle">مهمة جديدة</h2>
+                <button class="modal-close" id="taskModalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="taskForm">
+                    <input type="hidden" id="taskId" value="">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="taskTitle">العنوان *</label>
+                            <input type="text" id="taskTitle" placeholder="أدخل عنوان المهمة" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="taskCategory">التصنيف</label>
+                            <select id="taskCategory"></select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="taskDescription">الوصف</label>
+                        <textarea id="taskDescription" rows="3" placeholder="أدخل وصف المهمة"></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="taskStatus">الحالة</label>
+                            <select id="taskStatus">
+                                <option value="pending">معلقة</option>
+                                <option value="in-progress">قيد التنفيذ</option>
+                                <option value="completed">مكتملة</option>
+                                <option value="cancelled">ملغية</option>
+                                <option value="on-hold">معلقة مؤقتًا</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="taskPriority">الأولوية</label>
+                            <select id="taskPriority">
+                                <option value="low">منخفضة</option>
+                                <option value="medium" selected>متوسطة</option>
+                                <option value="high">مرتفعة</option>
+                                <option value="urgent">عاجل</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="taskDueDate">التاريخ المستحق</label>
+                            <input type="date" id="taskDueDate">
+                        </div>
+                        <div class="form-group">
+                            <label for="taskColor">اللون</label>
+                            <input type="color" id="taskColor" value="#6C63FF">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="taskTags">الوسوم (مفصولة بفواصل)</label>
+                        <input type="text" id="taskTags" placeholder="تصميم, تطوير, تسويق">
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="taskEstimatedTime">الوقت المقدر (ساعات)</label>
+                            <input type="number" id="taskEstimatedTime" min="0" step="0.5" placeholder="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="taskProgress">التقدم (%)</label>
+                            <input type="range" id="taskProgress" min="0" max="100" value="0">
+                            <span id="taskProgressValue">0%</span>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="taskFavorite"> مفضلة
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="taskPinned"> مثبتة
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="taskReminder"> تذكير
+                            </label>
+                            <input type="datetime-local" id="taskReminderDate" style="display: none;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="taskNotes">ملاحظات إضافية</label>
+                        <textarea id="taskNotes" rows="2" placeholder="أي ملاحظات إضافية..."></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="taskModalCancel">إلغاء</button>
+                <button class="btn btn-primary" id="taskModalSave">حفظ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CONFIRM MODAL -->
+    <div class="modal-overlay" id="confirmModalOverlay">
+        <div class="modal modal-small" id="confirmModal">
+            <div class="modal-header">
+                <h2 id="confirmTitle">تأكيد</h2>
+                <button class="modal-close" id="confirmClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <p id="confirmMessage">هل أنت متأكد؟</p>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="confirmCancel">إلغاء</button>
+                <button class="btn btn-danger" id="confirmOk">تأكيد</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CATEGORY MODAL -->
+    <div class="modal-overlay" id="categoryModalOverlay">
+        <div class="modal modal-small" id="categoryModal">
+            <div class="modal-header">
+                <h2 id="categoryModalTitle">تصنيف جديد</h2>
+                <button class="modal-close" id="categoryModalClose">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="categoryForm">
+                    <input type="hidden" id="categoryId">
+                    <div class="form-group">
+                        <label for="categoryName">اسم التصنيف *</label>
+                        <input type="text" id="categoryName" placeholder="أدخل اسم التصنيف" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="categoryColor">اللون</label>
+                        <input type="color" id="categoryColor" value="#6C63FF">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="categoryModalCancel">إلغاء</button>
+                <button class="btn btn-primary" id="categoryModalSave">حفظ</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TASK DETAILS MODAL  -->
+    <div class="modal-overlay" id="taskDetailsModalOverlay">
+        <div class="modal modal-large" id="taskDetailsModal">
+            <div class="modal-header">
+                <h2 id="taskDetailsTitle">تفاصيل المهمة</h2>
+                <button class="modal-close" id="taskDetailsClose">&times;</button>
+            </div>
+            <div class="modal-body" id="taskDetailsBody">
+                <!-- Rendered by JS -->
+            </div>
+        </div>
+    </div>
+
+    <!--  NOTIFICATION PANEL -->
+    <div class="notification-panel" id="notificationPanel">
+        <div class="notification-panel-header">
+            <h3>الإشعارات</h3>
+            <button class="btn btn-sm btn-outline" id="clearAllNotifications">مسح الكل</button>
+        </div>
+        <div class="notification-panel-body" id="notificationPanelBody">
+            <div class="empty-state">
+                <i class="fas fa-bell-slash"></i>
+                <p>لا توجد إشعارات</p>
+            </div>
+        </div>
+    </div>
+
+    <!--  QUICK ACTIONS PANEL  -->
+    <div class="quick-actions-panel" id="quickActionsPanel">
+        <button class="quick-action" data-action="new-task">
+            <i class="fas fa-plus-circle"></i>
+            <span>مهمة جديدة</span>
+        </button>
+        <button class="quick-action" data-action="search">
+            <i class="fas fa-search"></i>
+            <span>بحث</span>
+        </button>
+        <button class="quick-action" data-action="export">
+            <i class="fas fa-file-export"></i>
+            <span>تصدير</span>
+        </button>
+        <button class="quick-action" data-action="backup">
+            <i class="fas fa-database"></i>
+            <span>نسخ احتياطي</span>
+        </button>
+        <button class="quick-action" data-action="theme">
+            <i class="fas fa-palette"></i>
+            <span>تغيير الثيم</span>
+        </button>
+        <button class="quick-action" data-action="settings">
+            <i class="fas fa-cog"></i>
+            <span>الإعدادات</span>
+        </button>
+    </div>
+
+    <!-- TOAST CONTAINER -->
+    <div id="toastContainer"></div>
+
+
+    <!-- SCRIPTS -->
+
+    <script src="script.js"></script>
+</body>
+</html>
